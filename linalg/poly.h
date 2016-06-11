@@ -1,9 +1,11 @@
 // Polynomial C - polynomial class; working with polynomials
 
 #include <vector>
+#include <string>
 #include <cmath> // for exp function
 
 using namespace std;
+
 
 class polynomial
 {
@@ -89,14 +91,14 @@ class polynomial
 
 polynomial polyMul(polynomial a, polynomial b) // Multiply two polynomials
 {
-	int nd = a.getDeg() + b.getDeg();
+	int nd = a.getDeg() + b.getDeg()-1;
 	polynomial ans = polynomial(nd);
 	
-	for(int i = 0; i < nd; i++)
+	for(int i = 0; i < a.getDeg(); i++)
 	{
-		for(int j = 0; j < i; j++)
+		for(int j = 0; j < b.getDeg(); j++)
 		{
-			ans.addTo(i,a.getVal(j)*b.getVal(i-j));
+			ans.addTo(i+j,a.getVal(i)*b.getVal(j));
 		}
 	}
 	
@@ -126,6 +128,8 @@ double eval(polynomial pol, double x)
 	
 	return ans;
 }
+
+
 
 
 
