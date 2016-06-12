@@ -19,7 +19,7 @@ void printPoly(polynomial p)
 		{
 			cout << "+ ";
 		}
-		cout <<  std::setprecision(25) << p.getVal(i) << "x^" << i << " ";
+		cout <<  std::setprecision(10) << p.getVal(i) << "x^" << i << " ";
 	}
 	
 	cout << endl;
@@ -27,28 +27,38 @@ void printPoly(polynomial p)
 
 
 int main()
-{
-	polynomial p(2);
-	p.setVals(0,3);
-	p.setVals(1,2);
+{		
+	int d;
+	cin >> d;
 	
-	vector<polynomial> polyV(5);
+	polynomial tof(d);
 	
-	vector<polynomial> ortBasis = orthoBasis(6);
+	for(int i = 0; i < d; i++)
+	{
+		int x;
+		cin >> x;
+		tof.setVals(i,x);
+	}
 	
+	int app;
+	cin >> app;
 	
-	polynomial polka = integral(polyMul(ortBasis[0],ortBasis[1]));
+	vector<polynomial> ortBasis = orthoBasis(app);
 	
-	
-	int acc = 14;
-	polynomial bestApproximation(10);
+	polynomial bestApproximation(app);
 	
 	for(int i = 0; i < ortBasis.size(); i++)
 	{
-		bestApproximation = bestApproximation + proj(est(acc),ortBasis[i]);
+		bestApproximation = bestApproximation + proj(tof,ortBasis[i]);
 	}
 	
 	printPoly(bestApproximation);
+	
+	cout << "Error: " << sqrt(inner(bestApproximation - tof,bestApproximation - tof));
+	int k;
+	cin >> k;
+	
+	cout << "Bye!" << endl;
 	
 	
 	return 0;
