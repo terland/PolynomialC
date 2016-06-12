@@ -10,12 +10,11 @@ using namespace std;
 class polynomial
 {
 	private:
-	vector<double> v;
-	int deg;
+	vector<double> v; // vector containing coefficients
+	int deg; // degree of polynomial
 	
 	public:
-	
-	polynomial(int degree)
+	polynomial(int degree = 0)
 	{
 		deg = degree;
 		
@@ -25,7 +24,10 @@ class polynomial
 	void setDegree(int degree)
 	{
 		deg = degree;
-		v.resize(degree);
+		while(v.size() <= degree)
+		{
+			v.push_back(0);
+		}
 	}
 	
 	int getDeg()
@@ -60,7 +62,35 @@ class polynomial
 		
 		for(int i = 0; i < added.getDeg(); i++)
 		{
-			result.addTo(i,v[i]);
+			result.addTo(i,added.getVal(i));
+		}
+		
+		return result;
+	}
+	
+	polynomial operator+= (polynomial added)
+	{
+		setDegree(max(added.getDeg(),deg));
+		
+		for(int i = 0; i < added.getDeg(); i++)
+		{
+			addTo(i,added.getVal(i));
+		}
+	}
+	
+	
+	polynomial operator- (polynomial added)
+	{
+		polynomial result(max(added.getDeg(),deg));
+		
+		for(int i = 0; i < deg; i++)
+		{
+			result.setVals(i,v[i]);
+		}
+		
+		for(int i = 0; i < added.getDeg(); i++)
+		{
+			result.addTo(i,-added.getVal(i));
 		}
 		
 		return result;
@@ -68,9 +98,10 @@ class polynomial
 	
 	void operator*= (double val)
 	{
+		//cout << val << " :)" << endl;
 		for(int i = 0; i < deg; i++)
 		{
-			v[i] *= deg;
+			v[i] *= val;
 		}
 	}
 	
@@ -93,6 +124,8 @@ polynomial polyMul(polynomial a, polynomial b) // Multiply two polynomials
 {
 	int nd = a.getDeg() + b.getDeg()-1;
 	polynomial ans = polynomial(nd);
+	
+	
 	
 	for(int i = 0; i < a.getDeg(); i++)
 	{
